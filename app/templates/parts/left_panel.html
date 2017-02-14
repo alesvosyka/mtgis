@@ -1,0 +1,11 @@
+{% if not current_user.is_authenticated %}
+{% include 'parts/login.html' %}
+{% else %}
+{% include 'parts/success_login.html' %}
+{% endif %}
+
+{% if current_user.is_authenticated %}
+{% include 'parts/menu_logged_user.html' %}
+{% else %}
+{% include 'parts/menu_unlogged_user.html'%}
+{% endif%}

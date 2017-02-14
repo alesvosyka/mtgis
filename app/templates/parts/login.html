@@ -1,0 +1,18 @@
+
+<fieldset class="field_login">
+
+    <legend>Přihlášení</legend>
+
+    <form action = "/login" method = "post">
+        <label for="lname">Přihlašovací jméno:</label>
+        <input type = "text" name = "login" id="lname"/>
+        <label for="psswd">Heslo:</label>
+        <input type = "password" name = "password" id = "psswd" />
+        <input type = "submit" value = "Přihlásit se" />
+    </form>
+
+    <form action="/register" method="get">
+        <input type="submit" value="Registrace" />
+    </form>
+{{ message }}
+</fieldset>

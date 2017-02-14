@@ -1,0 +1,116 @@
+
+h2  { color: black; 
+      text-align: center;
+      margin: 0 0 0 0;
+      padding: 2px 2px 2px 2px
+    }
+h1  { color: black; 
+      text-align: center;
+      font-weight: bolt;
+      margin: 0 0 0 0;
+      padding: 2px 2px 2px 2px
+    } 
+
+/*Global link settings*/
+a:link  { color: red;
+          
+        }
+a:visited   { color: red;
+            
+            }
+a:hover { color: hotpink;
+        }
+a:active  { color: blue;
+          }
+
+
+/*Forms, inputs, etc...*/
+label   { font-size: small;
+          font-weight: bolt;
+        }
+
+input[type=text]  { width: 100%;
+                    padding: 2px 5px;
+                    margin: 8px 0;
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                    font-size: small
+                  }
+
+input[type=password]  { width: 100%;
+                        padding: 2px 5px;
+                        margin: 8px 0;
+                        display: inline-block;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                        font-size: small
+                      }
+
+input[type=submit]  { width: auto;
+                      background-color: black;
+                      display: inline-block;
+                      color: white;
+                      padding: 2px 5px;
+                      margin: 8px 0;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-size: small
+                    }
+
+input[type=submit]:hover  {  background-color: darkgray;
+                          }
+
+fieldset  { margin: 3px;
+            padding: 3px;
+          }
+form{display: inline-block}          
+
+
+/*Layout setting*/
+body {background-color: white}
+  .header { background-color: white;
+            padding: 1px 1px 1px 1px;
+            margin: 0;
+          }
+    .label{ text-align: center;
+          }
+    
+             
+  .main { background-color: white;
+          min-height: 600px;
+          display: flex;
+        }
+    .left_panel { background-color: white;
+                  min-width: 200px;
+                  padding: 3px; 
+                  margin: 0;
+                }
+     
+    .content {  background-color: white;
+                border-style: solid;
+                border-width: 1px;
+                flex: 1;
+                margin:0;
+                padding: 3px;
+             }
+  .footer { background-color: white;
+            padding: 1em;
+            text-align: center;
+            font-size: small;
+            
+          }
+
+
+/*contetnts*/
+.field_register { min-width: 200px;
+                  max-width: 20em;
+                }
+                       
+/*left_panel contents */  
+.field_login { min-width: 150px;
+               max-width: 10em;
+             }

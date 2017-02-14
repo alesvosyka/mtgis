@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>MTG</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="header">
+    <div class="label">
+    <h1>MTG</h1>
+    <h2>Informační turnajový systém</h2>
+    </div>
+
+</div>
+<div class="main">
+    <div class="left_panel">
+        {% include 'parts/left_panel.html' %}
+
+    </div>
+    <div class="content">
+        {%block content%}
+        {%endblock%}
+    </div>
+</div>
+<div class="footer">
+    {% include 'parts/footer.html' %}
+</div>
+</body>
+</html>
