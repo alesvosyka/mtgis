@@ -1,6 +1,6 @@
 from .config import app, login_manager, db
-from flask import redirect, url_for, request, render_template, flash
-from flask_login import login_user, current_user, logout_user, session
+from flask import redirect, url_for, request, render_template
+from flask_login import login_user, current_user, logout_user
 from .model_user import User
 
 """

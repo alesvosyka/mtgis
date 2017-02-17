@@ -1,0 +1,4 @@
+flask>=0.12
+flask-login>=0.3.2
+flask-sqlalchemy
+werkzeug
