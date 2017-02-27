@@ -1,7 +1,11 @@
-import app.config
 import app.controller
-import app.model_user
+from app.config import db
+from app.db_init import init_privileges, create_super_admin_acc
 
 
-app.config.db.create_all()
-print("init app successfully")
+
+print("Inicializace")
+db.create_all()
+init_privileges()
+create_super_admin_acc()
+

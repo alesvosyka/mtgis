@@ -4,22 +4,15 @@
         <fieldset class="field_register">
            <legend>Registrace</legend>
             <form action = "/register" method = "post">
-                <div>
-                    <label for="log_name">Přihlašovací jméno:</label>
-                    <input type = "text" name = "login" placeholder="{{login}}" id="log_name"/>{{login_message}}
-                </div>
-                <div>
+
+                    <label for="login_name">Přihlašovací jméno:</label>
+                    <input type = "text" name = "login_name" placeholder="{{login}}" id="login_name" required/>  <div class="comment">{{login_name_message}}</div> <br />
+
                     <label for="nick_name">Přezdívka:</label>
-                    <input type = "text" name = "nick" placeholder="{{nick}}" id="nick_name"/>{{nick_message}}
-                </div>
-                <div>
+                <input type = "text" name = "nick_name" placeholder="{{nick}}" id="nick_name" required/>  <div class="comment">{{nick_name_message}}</div> <br />
+
                     <label for="password">Heslo:</label>
-                    <input type = "password" name = "password" placeholder="{{password}}" id="password"/>{{password_message}}
-                </div>
-                <div>
-                    <label for="email">Email:</label>
-                    <input type = "email" name = "email" placeholder="{{email}}" id="email"/>{{email_message}}
-                </div>
+                    <input type = "password" name = "password" placeholder="{{password}}" id="password" required/> <br />
             <input type = "submit" value = "submit" />
         </form>
         </fieldset>

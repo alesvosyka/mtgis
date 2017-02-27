@@ -10,12 +10,11 @@ from flask_sqlalchemy import *
 from os import path
 from flask_login import LoginManager
 
-global_config = dict()
-global_config['database_name'] = 'database.db'
-global_config['database_repository'] = 'db_repo'
-global_config['database_schema'] = 'sqlite:///'
-global_config['site_url'] = 'http://127.0.0.1:5000/'
-global_config['error_pages'] = 'error_pages'
+
+db_schema = 'sqlite:///'
+db_dir = 'db_repo'
+db_name = 'database.db'
+
 # Create flask instance
 app = Flask(__name__)
 
@@ -24,9 +23,7 @@ app.static_folder = 'static'
 app.template_folder = 'templates'
 app.secret_key = 'bflm456'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = path.join(global_config['database_schema'],
-                                                  global_config['database_repository'],
-                                                  global_config['database_name'])
+app.config['SQLALCHEMY_DATABASE_URI'] = path.join(db_schema, db_dir, db_name)
 app.config['SQLALCHEMY_MIGRATE_REPO'] = 'db_repo'
 
 # Create database instance with flask context

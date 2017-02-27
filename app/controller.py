@@ -1,11 +1,19 @@
-from .config import app, login_manager, db
-from flask import redirect, url_for, request, render_template
+from flask import request, render_template, jsonify
 from flask_login import login_user, current_user, logout_user
-from .model_user import User
+
+
+from app.models.model_exceptions import ErrorIncorrectPassword, ErrorRecordExists, ErrorRecordNotExists
+from app.models.model_user import User, Login
+from app.models.model_turnament import Tournament, Player, PlayingType
+
+from .config import app, login_manager
+
+from datetime import datetime
 
 """
 This module implements Front-controller.
 """
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,47 +23,48 @@ def load_user(user_id):
 @app.route('/')
 @app.route('/index')
 def index():
-    print()
-    return render_template('layout.html')
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
-def login():
+def login_method():
     if request.method == 'POST':
-        user = User(login=request.form['login'], password=request.form['login'])
-        user, flag = user.authentication()
-        if user is None:
-            message = "Error:" + User.flags[flag]
-            return render_template('layout.html', message=message)
-        if login_user(user):
-            return render_template('layout.html', user_id=current_user.nick)
+        login = Login(login_name=request.form['login_name'], password=request.form['password'])
+        try:
+            login = login.authentication()
+        except ErrorRecordNotExists:
+            return render_template('layout.html', login_message="Neexistující uživatelské jméno.")
+        except ErrorIncorrectPassword:
+            return render_template('layout.html', login_message="Špatné heslo")
+        user = User.query.get(login.user_id)
+        login_user(user)
+        for x in current_user.list_of_privileges:
+            print(x.type_of_privilege.name)
+        return render_template('layout.html', user_id=current_user.nick_name)
     else:
-        return render_template('layout.html')
+        return render_template('index.html')
 
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
-        user = User(login=request.form['login'],
-                    password=request.form['password'],
-                    nick=request.form['nick'],
-                    email=request.form['email'])
-        collisions = user.register()
-        empties = user.check_empties()
-        result = dict()
-        if collisions is not None:
-            for item in collisions:
-                result[item + "_message"] = "- je již použito"
-        if empties is not None:
-            for item in empties:
-                result[item + "_message"] = "- políčko nesmí být prázdné"
-        if len(result) == 0:
+        messages = dict()
+        # Validation
+        user = User(nick_name=request.form['nick_name'])
+        if user.exists():
+            messages['nick_name_message'] = "Uživatel s daným jménem již existuje."
+        login = Login(login_name=request.form['login_name'], password=request.form['password'])
+        if login.exists():
+            messages['login_name_message'] = "Přihlašovací jméno již někdo používá."
+        # Not valid
+        if len(messages) != 0:
+            return render_template('register.html', **messages)
+        # Valid
+        else:
+            user.add_user()
+            user = User.query.filter_by(nick_name=user.nick_name).first()
+            login.add_login(user.id)
             return render_template('success_register.html')
-        for name in request.form:
-            if not name == "password":
-                result[name] = request.form[name]
-
-        return render_template('register.html', **result)
     else:
         return render_template('register.html')
 
@@ -64,12 +73,42 @@ def register():
 def logout():
     if request.method == 'POST':
         logout_user()
-        return render_template('layout.html')
+        return render_template('index.html')
 
 
-@app.route('/personal_profile')
+@app.route('/user_profile')
 def personal_profile():
-    return render_template('personal_profile.html')
+    return render_template('user_profile.html')
+
+
+@app.route('/create_tournament',  methods=['POST', 'GET'])
+def create_tournament():
+    if request.method == 'POST':
+        if request.form['type'] == 'booster_draft':
+            count_of_boosters = int(request.form['count_of_boosters'])
+            return render_template('create_tournament.html', count_of_boosters=count_of_boosters)
+        return render_template('create_tournament.html')
+    else:
+        return render_template('create_tournament.html')
+
+
+@app.route('/choice_tournament',  methods=['POST', 'GET'])
+def choice_tournament():
+    if request.method == 'POST':
+        return render_template('choice_tournament.html')
+    else:
+        return render_template('choice_tournament.html')
+
+
+@app.route('/get_user_list')
+def get_user_list():
+    users = User.query.filter().all()
+
+    result = dict()
+    for user in users:
+        result[user.nick] = user.id
+    print(result)
+    return jsonify(result)
 
 
 # ----------------------------------------------------------------------------------------------------------------------

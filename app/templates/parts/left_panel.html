@@ -1,11 +1,22 @@
-{% if not current_user.is_authenticated %}
-{% include 'parts/login.html' %}
-{% else %}
+<!-- přihlášení nebo výpis přihlášeného uživatele -->
+<!--  -->
+{% if current_user.is_authenticated %}
 {% include 'parts/success_login.html' %}
+{% else %}
+{% include 'parts/login.html' %}
 {% endif %}
 
-{% if current_user.is_authenticated %}
-{% include 'parts/menu_logged_user.html' %}
-{% else %}
-{% include 'parts/menu_unlogged_user.html'%}
-{% endif%}
+{% include 'parts/menu_personal.html' %}
+
+{% include 'parts/menu_tournaments.html' %}
+
+{% include 'parts/menu_mtg.html' %}
+
+{% include 'parts/menu_information.html' %}
+
+
+{% for item in current_user.list_of_privileges %}
+{% if item.type_of_privilege.name == "super_admin" %}
+{% include 'parts/menu_admin.html' %}
+{% endif %}
+{% endfor %}

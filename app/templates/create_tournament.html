@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+        <fieldset id="create_tournament">
+           <legend>Vytvořit turnaj</legend>
+            <form action = "/create_tournament" method = "post">
+
+
+                <label for="tournament_name">(*) Jméno turnaje:</label>
+                <input type = "text" name = "name"  id="tournament_name" required /> <br/>
+                <label for="tournament_name">Start turnaje:</label>
+                <input type = "date" name = "date"   id="start_date" required />
+                <input type = "time" name = "time"   id="start_time" required /> <br/>
+
+                {% for number in range(count_of_boosters) %}
+                    {{number + 1}}. booster <select><option value="volvo">Volvo</option>
+                                        </select><br>
+                {% endfor %}
+                <fieldset>
+                 <legend>Hráči v databázi:</legend>
+                {% for user in users %}
+                    <input type="checkbox"  name = "user" value="{{user.id}}"> {{user.nick}}<br />
+                {% endfor %}
+                </fieldset>
+                <label for="new_players">Přidat nové hráče:</label>
+                <input type = "text" name = "new_players" id="new_players"  /> <span class="comment"> - jednotlivé přezdívky musí být odděleny mezerou</span> <br/>
+
+                <input type = "submit" value = "Vytvořit" id="create_tournament_button" /> <br />
+                <div class="comment"> (položky označené  "*" jsou povinné) </div>
+            </form>
+        </fieldset>
+
+
+
+{% endblock %}
