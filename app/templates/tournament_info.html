@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% block content %}
+Název turnaje: {{tournament.name}}<br>
+Vlastník: <a href="/user_profile/{{tournament.owner.id}}"> {{ tournament.owner.nick_name }} </a> <br>
+Hráči:
+{% for player in tournament.players %}
+<a href="/user_profile/{{player.user.id}}">{{player.user.nick_name}} </a>,
+{% endfor %}
+
+{% if tournament.round_scheme | length != 0   %}
+    <form action="/edit_schedule_tournament" method="post">
+    Rozpis zápasů:
+    <input type="hidden"  name="tournament_id" value="{{tournament.id}}">
+    <table class="schedule_tournament">
+
+        {% for round in tournament.round_scheme %}
+        <tr><th>{{round.order}}</th>
+         {% for match1vs1 in  round.match_scheme %}
+
+
+            <td>
+                {% if match1vs1.result_match1.user_id is not none and match1vs1.result_match2.user_id is not none %}
+                {{match1vs1.result_match1.user.nick_name}}
+                {{match1vs1.result_match1.wins}} :
+                {{match1vs1.result_match2.wins}}
+                {{match1vs1.result_match2.user.nick_name}}
+                {%endif%}
+
+
+            </td>
+
+        {%endfor%}
+        </tr>
+
+
+    {%endfor%}
+    </table>
+    <input type="submit" value="Editovat">
+</form>
+
+
+
+
+
+{% endif %}
+
+
+{#---------------------------------------#}
+{% if current_user.id == tournament.owner.id %}
+{% if tournament.round_scheme|length == 0 %}
+    <form action="/generateEachVsEach" method="post">
+        <input type="submit" value="Generovat náhodně rozpis (každý proti každému)">
+    </form>
+
+    <form action="/manual_setting_tournament_scheme/{{tournament.id}}" method="post">
+        <input type="submit" value="Vygenerovat prázdnou tabulku a manuálně zadat">
+    </form>
+
+    <form>
+        <input type="submit" value="Generovat po kole">
+    </form>
+
+{% else %}
+    <form action="/delete_round_scheme/{{tournament.id}}">
+        <input type="submit" value="Smazat rozpis">
+    </form>
+
+
+{% endif %}
+{% endif %}
+
+{% endblock %}
