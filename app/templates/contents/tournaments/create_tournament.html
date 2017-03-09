@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+        <fieldset id="create_tournament">
+           <legend>Vytvořit turnaj</legend>
+            <form action = "/save_tournament" method = "post">
+
+                <fieldset>
+                    <legend>Základní nastavení</legend>
+                     <div class="comment"> Typ turnaje:  </div><br>
+                    <label for="tournament_name">(*) Jméno turnaje:</label>
+                    <input type = "text" name = "name"  id="tournament_name" required /> <br/>
+                    <label for="tournament_name">Start turnaje:</label>
+                    <input type = "date" name = "date"   id="start_date" required />
+                    <input type = "time" name = "time"   id="start_time" required /> <br/>
+                </fieldset>
+                <fieldset>
+                <legend>Nastavení boosterů</legend>
+                    <table><tr><td></td> <td> <div class="comment">(jméno setu | blok | typ)</div> </td></tr>
+                        {% for number in range(count_of_boosters) %}
+                        <tr>
+                        <td>{{number + 1}}. booster</td>
+                        <td>
+                        <select>
+                            {% for set in sets_list %}
+                            <option value="{{ set.name }}">{{ set.name }} | {{ set.block }} | {{ set.type }}</option>
+                            {% endfor %}
+                        </select><br>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </fieldset>
+                <fieldset>
+                 <legend>Přidání hráčů:</legend>
+                {% for user in users %}
+                    <input type="checkbox"  name = "user" value="{{user.id}}"> {{user.nick_name}} |
+                {% endfor %}
+                <br>
+                <label for="new_players">Přidat nové hráče:</label>
+                <input type = "text" name = "new_players" id="new_players"  /> <span class="comment"> - jednotlivé přezdívky musí být odděleny mezerou</span> <br/>
+                </fieldset>
+
+                <input type = "submit" value = "Vytvořit" id="create_tournament_button" /> <br />
+                <div class="comment"> (položky označené  "*" jsou povinné) </div>
+            </form>
+        </fieldset>
+
+
+
+{% endblock %}

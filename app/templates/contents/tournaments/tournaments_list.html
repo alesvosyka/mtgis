@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<table>
+    <tr>
+        <th>Název turnaje</th>
+        <th>Vlastník</th>
+        <th>Začátek</th>
+        <th>Možnosti</th>
+    </tr>
+    {% for tournament, user in result%}
+    <tr>
+        <td><a href="/tournament_info/{{tournament.id}}">{{tournament.name}}</a></td>
+        <td><a href="/user_profile/{{user.id}}">{{user.nick_name}}</a></td>
+        <td>{{tournament.start_datetime}}</td>
+        <td> Tlacitka </td>
+    </tr>
+    {%endfor%}
+</table>
+
+
+
+
+{% endblock %}

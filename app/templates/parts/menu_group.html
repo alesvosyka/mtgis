@@ -1,0 +1,9 @@
+<div class="left_panel_element">
+    <div class='menu_label'> Skupiny </div>
+    <ul>
+        <li><a href="/group_list">Přehled</a></li>
+        {% if current_user.is_authenticated %}
+        <li><a href="/create_group">Vytvořit skupinu </a></li>
+        {%endif%}
+    </ul>
+</div>

@@ -1,0 +1,10 @@
+
+{% if current_user.is_authenticated %}
+<div class="left_panel_element">
+<div class='menu_label'> OSOBNÍ MENU </div>
+<ul>
+    <li><a href="/user_profile">Můj profil</a></li>
+</ul>
+</div>
+{% endif %}
+
