@@ -18,3 +18,9 @@ class ErrorRecordNotExists(Error):
 class ErrorIncorrectPassword(Error):
     def __init__(self, message="Incorrect password"):
         self.message = message
+
+
+class ErrorNotSet(Error):
+    def __init__(self, attribute, message="Record does not exist"):
+        self.attribute = attribute
+        self.message = message

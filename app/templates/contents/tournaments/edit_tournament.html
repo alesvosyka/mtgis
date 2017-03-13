@@ -1,13 +1,10 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-        <fieldset id="create_tournament">
-           <legend>Vytvořit turnaj</legend>
-            <form action = "/save_tournament" method = "post">
+        <fieldset >
+           <legend>Editovat turnaj</legend>
+            <form action = "/save_edited_tournament" method = "post">
                 <input type="hidden" name="type" value="{{type}}">
-                {% for id in group_ids %}
-                    <input type="hidden" name="group_id" value="{{id}}">
-                {% endfor%}
                 <fieldset>
                     <legend>Základní nastavení</legend>
                      <div class="comment"> Typ turnaje:  </div><br>

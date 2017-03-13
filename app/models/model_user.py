@@ -54,6 +54,10 @@ class Role(db.Model):
         self.user_id = user_id
         self.type_of_role_id = type_of_role_id
 
+    @property
+    def role_name(self):
+        return TypeOfRole.query.filter_by(id=self.type_of_role_id).first()
+
     def add_role(self):
         if Role.query.filter_by(user_id=self.user_id,
                                 type_of_role_id=self.type_of_role_id).first() is None:
@@ -99,6 +103,13 @@ class User(db.Model):
     def get_id(self):
         return str(self.id)
 
+    @staticmethod
+    def get_all_users(filter_id_list=[]):
+        condition = "(User.id != 1)"
+        for id in filter_id_list:
+            condition += "& (User.id != {})".format(id)
+        return User.query.filter(condition).all()
+
     def __repr__(self):
         return "Nick: {}, id: {} ".format(self.nick_name, self.id)
 
@@ -128,22 +139,4 @@ class User(db.Model):
         return User.query.filter_by(nick_name=self.nick_name).first()
 
 
-class ResultMatch(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    wins = db.Column(db.Integer)
-    losses = db.Column(db.Integer)
 
-    @property
-    def user(self):
-        return User.query.get(self.user_id)
-
-    def __init__(self, user_id=None, wins=0, losses=0):
-        self.user_id = user_id
-        self.wins = wins
-        self.losses = losses
-
-    def add_result_match(self):
-        db.session.add(self)
-        db.session.commit()
-        return ResultMatch.query.order_by(ResultMatch.id.desc()).first()

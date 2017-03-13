@@ -2,8 +2,10 @@ from app.config import db
 from app.models.model_user import TypeOfRole, User, Login, Role
 from app.models.model_exceptions import ErrorRecordExists
 from app.models.model_mtg import MtgSet
-from app.models.model_turnament import TypeOfSchemeState, TypeOfTournamentState
-from app.models.model_group import GroupRole, TypesOfGroupRole
+from app.models.model_turnament import TypeOfTournamentState, TypeOfTournament
+from app.models.model_group import TypeOfGroupRole
+from app.models.model_schedule import TypeOfScheduleState
+
 
 from mtgsdk import Set
 from mtgsdk.restclient import MtgException
@@ -11,9 +13,18 @@ from datetime import datetime
 
 roles = ('super_admin', 'admin')
 super_admin = ("superadmin", "superadmin123")
-tournament_states = ("open", "closed")
-scheme_states = ("lock_players", "no_schema", "complete")
+tournament_states = ("open", "closed", "with_schedule")
+schedule_states = ("lock_players", "unlock_players")
 group_roles = ("owner", "group_admin")
+tournament_types = ("booster_draft", "classic")
+
+
+def init_tournament_types():
+    for name in tournament_types:
+        if TypeOfTournament.query.filter_by(name=name).first() is None:
+            role = TypeOfTournament(name=name)
+            db.session.add(role)
+    db.session.commit()
 
 
 def init_roles():
@@ -21,20 +32,18 @@ def init_roles():
         if TypeOfRole.query.filter_by(name=name).first() is None:
             role = TypeOfRole(name=name)
             db.session.add(role)
-            db.session.commit()
+    db.session.commit()
 
 
 def init_group_roles():
     for group_role in group_roles:
-        if TypesOfGroupRole.query.filter_by(name=group_role).first() is None:
-            role = TypesOfGroupRole(name=group_role)
+        if TypeOfGroupRole.query.filter_by(name=group_role).first() is None:
+            role = TypeOfGroupRole(name=group_role)
             try:
                 db.session.add(role)
             except:
                 pass
     db.session.commit()
-
-
 
 
 def create_super_admin_acc():
@@ -50,7 +59,7 @@ def create_super_admin_acc():
         except ErrorRecordExists:
             print("Login already exists.")
             return
-        role = Role(user_id=user.id, type_of_role_id=TypeOfRole.query.filter_by(name="superadmin").first().id)
+        role = Role(user_id=user.id, type_of_role_id=TypeOfRole.query.filter_by(name="super_admin").first().id)
         print(role.user_id)
         try:
             role.add_role()
@@ -59,23 +68,7 @@ def create_super_admin_acc():
 
 
 def init_mtg_sets():
-    try:
-        sets = Set.all()
-    except MtgException:
-
-        return
-
-    for card_set in sets:
-        if not card_set.online_only:
-            release_date = datetime.strptime(card_set.release_date, "%Y-%m-%d")
-            mtg_set = MtgSet(name=card_set.name,
-                             release_date=release_date,
-                             block=card_set.block,
-                             set_type=card_set.type)
-            try:
-                mtg_set.add_set()
-            except ErrorRecordExists:
-                print("Set is already in db.")
+    MtgSet.update()
 
 
 def init_tournament_states_types():
@@ -89,10 +82,10 @@ def init_tournament_states_types():
     db.session.commit()
 
 
-def init_scheme_states_types():
-    for scheme_state in scheme_states:
-        if TypeOfSchemeState.query.filter_by(name=scheme_state).first() is None:
-            state = TypeOfSchemeState(name=scheme_state)
+def init_schedule_states_types():
+    for scheme_state in schedule_states:
+        if TypeOfScheduleState.query.filter_by(name=scheme_state).first() is None:
+            state = TypeOfScheduleState(name=scheme_state)
             try:
                 db.session.add(state)
             except:

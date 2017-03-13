@@ -6,27 +6,27 @@
     <input type="hidden"  name="tournament_id" value="{{tournament.id}}">
     <table class="schedule_tournament">
 
-        {% for round in tournament.round_scheme %}
-        <tr><th>{{round.order}}</th>
-         {% for match1vs1 in  round.match_scheme %}
+        {% for round in tournament.schedules[0].rounds %}
+        <tr><th>{{round.order}}. kolo</th>
+         {% for match1vs1 in  round.matches1vs1 %}
 
-            {% if tournament.scheme_state.state_name != "lock_players" %}
+            {% if tournament.schedules[0].state_by_name != "lock_players" %}
             <td>
 
-                <select name="player {{match1vs1.result_match1_id}}"> {%for player in tournament.players%}<option value="{{player.user.id}}">{{player.user.nick_name}}</option> {%endfor%}  </select>
-                <input  name="wins {{match1vs1.result_match1_id}} "  type="number" value="0"> <b>:</b>
-                <input  name="wins {{match1vs1.result_match2_id}} "  type="number" value="0">
-                <select name="player {{match1vs1.result_match2_id}}"> {%for player in tournament.players%}<option value="{{player.user.id}}">{{player.user.nick_name}}</option> {%endfor%}  </select>
+                <select name="player {{match1vs1.result1_id}}"> {%for player in tournament.players%}<option value="{{player.user.id}}">{{player.user.nick_name}}</option> {%endfor%}  </select>
+                <input  name="wins {{match1vs1.result1_id}} "  type="number" value="0"> <b>:</b>
+                <input  name="wins {{match1vs1.result2_id}} "  type="number" value="0">
+                <select name="player {{match1vs1.result2_id}}"> {%for player in tournament.players%}<option value="{{player.user.id}}">{{player.user.nick_name}}</option> {%endfor%}  </select>
 
             </td>
             {% else %}
              <td>
-                <input type="hidden" name="player {{match1vs1.result_match1_id}}" value="{{match1vs1.result_match1.user.id}}">
-                {{match1vs1.result_match1.user.nick_name}}
-                <input  name="wins {{match1vs1.result_match1_id}} "  type="number" value="0"> <b>:</b>
-                <input  name="wins {{match1vs1.result_match2_id}} "  type="number" value="0">
-                {{match1vs1.result_match2.user.nick_name}}
-                <input type="hidden" name="player {{match1vs1.result_match2_id}}" value="{{match1vs1.result_match2.user.id}}">
+                <input type="hidden" name="player {{match1vs1.result1_id}}" value="{{match1vs1.result1.user.id}}">
+                {{match1vs1.result1.user.nick_name}}
+                <input  name="wins {{match1vs1.result1_id}} "  type="number" value="0"> <b>:</b>
+                <input  name="wins {{match1vs1.result2_id}} "  type="number" value="0">
+                {{match1vs1.result2.user.nick_name}}
+                <input type="hidden" name="player {{match1vs1.result2_id}}" value="{{match1vs1.result2.user.id}}">
             </td>
             {% endif %}
 

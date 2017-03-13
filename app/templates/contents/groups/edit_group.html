@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form action="/save_edited_group/{{group.id}}" method="post">
+    <fieldset>
+        {{message}}
+        <legend>Editovat skupinu</legend>
+        <label for="name">Název:</label>
+        <input type="text" name="group_name" id="name" value="{{group.name}}">
+
+        <fieldset>
+            <legend>Členové skupiny</legend>
+            {% for member in group_members %}
+             <input type="checkbox"  name = "member" value="{{member.id}}" checked> {{member.user.nick_name}} |
+            {% endfor %}
+        </fieldset>
+
+        <fieldset>
+            <legend>Volní hráči</legend>
+            {% for user in free_users %}
+            <input type="checkbox"  name = "user" value="{{user.id}}"> {{user.nick_name}} |
+            {% endfor %}
+        </fieldset>
+        <input type="submit" value="Uložit a přepsat">
+    </fieldset>
+</form>
+{% endblock %}

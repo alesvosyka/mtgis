@@ -4,15 +4,25 @@
         <fieldset id="create_tournament">
            <legend>Výběr typu turnaje </legend>
             <form action = "/create_tournament" method = "post">
+
                 <fieldset>
                     <legend>Typ turnaje:</legend>
                     <input type="radio" name="type" value="booster_draft" checked> Booster draft |
                        Počet boosterů <input type="number" name="count_of_boosters" value="3"> <br>
 
                 </fieldset>
+
+                <fieldset>
+                    <legend>Zobrazit</legend>
+                    <input type="radio" name="players" value="all"> všechny  hráče v databázi.
+                    <input type="radio" name="players" value="groups" checked> pouze hráče zvolených skupin.
+                </fieldset>
+
                 <fieldset>
                     <legend>Pro skupiny:</legend>
-
+                    {%for group in groups%}
+                        <input type="checkbox" name="group" value="{{group.id}}"> {{group.name}} |
+                    {%endfor%}
                 </fieldset>
 
 

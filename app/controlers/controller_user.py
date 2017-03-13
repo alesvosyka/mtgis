@@ -45,15 +45,15 @@ def register():
             messages['login_name_message'] = "Přihlašovací jméno již někdo používá."
         # Not valid
         if len(messages) != 0:
-            return render_template('contents/user/register.html', **messages)
+            return render_template('contents/users/register.html', **messages)
         # Valid
         else:
             user.add_user()
             user = User.query.filter_by(nick_name=user.nick_name).first()
             login.add_login(user.id)
-            return render_template('contents/user/success_register.html')
+            return render_template('contents/users/success_register.html')
     else:
-        return render_template('contents/user/register.html')
+        return render_template('contents/users/register.html')
 
 
 @app.route('/logout', methods=['POST', 'GET'])
@@ -68,5 +68,5 @@ def personal_profile(user_id):
     if request.method == 'GET':
         user = User.query.get(user_id)
 
-        return render_template('contents/user/user_profile.html', user=user)
-    return render_template('contents/user/user_profile.html')
+        return render_template('contents/users/user_profile.html', user=user)
+    return render_template('contents/users/user_profile.html')

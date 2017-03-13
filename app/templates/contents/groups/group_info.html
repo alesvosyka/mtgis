@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+Název: {{group.name}} <br>
+Vlastník: {{group.owner.nick_name}}<br>
+Členové: {%for member in group.group_members %} {{member.user.nick_name }} {%endfor%} <br>
+
+{% if group.owner.id == current_user.id  %}
+    <form action="/edit_group/{{group.id}}" method="post">
+        <input type="submit" value="Editovat">
+    </form>
+
+{% endif %}
+
+
+{% endblock %}

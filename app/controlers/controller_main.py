@@ -27,3 +27,6 @@ def index():
 def page_not_found(e):
     return render_template('error_pages/404.html'), 404
 
+@app.errorhandler(401)
+def page_not_found(e):
+    return render_template('error_pages/401.html'), 404

@@ -110,6 +110,34 @@ form
   text-align: left;
 }          
 
+table
+{
+  border-radius: 2px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+tr
+{
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+}
+
+td,th 
+{
+  margin: 0;
+  padding: 5px 10px 5px 10px;
+  border-radius: 2px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  white-space: nowrap;
+}
+
 
 /*Layout setting---------------------*/
 body 
@@ -201,6 +229,7 @@ body
 .schedule_tournament td
 {
   border: 1px solid;
+  margin: 0ů
 
 }
 
