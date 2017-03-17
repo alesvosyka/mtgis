@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<form action="/save_schedule/{{schedule.id}}" method="post">
+    Rozpis pro turnaj: <b>{{schedule.tournament.name}} </b>
+
+    <fieldset>
+            <legend>Bodování</legend>
+            Čistá výhra:
+            <input type="number" name="pure_win" value="3" min="0">,
+            Výhra:
+            <input type="number" name="win" value="2" min="0">,
+            Remíza:
+            <input type="number" name="draw" value="1" min="0">,
+            Prohra:
+            <input type="number" name="lose" value="1" min="0">,
+            Čistá prohra
+            <input type="number" name="pure_lose" value="0" min="0">
+        </fieldset>
+
+    <table class="schedule_tournament">
+
+        {% for round in schedule.rounds %}
+        <tr><th>{{round.order}}. kolo</th>
+         {% for match1vs1 in  round.matches1vs1 %}
+
+            {% if schedule.state_by_name == "manual" %}
+            <td>
+
+                <select name="player {{match1vs1.result1_id}}"> {%for player in schedule.tournament.players%}<option value="{{player.user.id}}">{{player.user.nick_name}}</option> {%endfor%}  </select>
+                <input  name="wins {{match1vs1.result1_id}} "  type="number" value="{{match1vs1.result1.wins}}"> <b>:</b>
+                <input  name="wins {{match1vs1.result2_id}} "  type="number" value="{{match1vs1.result2.wins}}">
+                <select name="player {{match1vs1.result2_id}}"> {%for player in schedule.tournament.players%}<option value="{{player.user.id}}">{{player.user.nick_name}}</option> {%endfor%}  </select>
+
+            </td>
+            {% else %}
+             <td>
+                <input type="hidden" name="player {{match1vs1.result1_id}}" value="{{match1vs1.result1.user.id}}">
+                {{match1vs1.result1.user.nick_name}}
+                <input  name="wins {{match1vs1.result1_id}} "  type="number" value="{{match1vs1.result1.wins}}"> <b>:</b>
+                <input  name="wins {{match1vs1.result2_id}} "  type="number" value="{{match1vs1.result2.wins}}">
+                {{match1vs1.result2.user.nick_name}}
+                <input type="hidden" name="player {{match1vs1.result2_id}}" value="{{match1vs1.result2.user.id}}">
+            </td>
+            {% endif %}
+
+        {%endfor%}
+        </tr>
+
+
+    {%endfor%}
+    </table>
+    <input type="submit" value="Uložit a přepsat">
+</form>
+
+
+{% endblock %}

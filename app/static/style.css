@@ -1,0 +1,244 @@
+
+h2  
+{ 
+  color: black; 
+  text-align: center;
+  margin: 0;
+  padding: 2px;
+}
+
+h1  
+{ 
+  color: black; 
+  text-align: center;
+  font-weight: bolt;
+  margin: 0;
+  padding: 2px;
+} 
+
+
+a 
+{ 
+  text-decoration: none;
+  text-align: auto;
+  font-weight: bold;
+}
+
+a:link, a:visited  
+{
+  color: black;
+}
+
+a:hover 
+{ 
+  color: darkgray;
+}
+
+a:active  
+{ 
+  color: blue;
+}
+
+ul
+{
+  list-style-type: none;
+  margin: 0 3px 0 0;
+  padding: 0;
+
+} 
+
+label   
+{ 
+  font-size: small;
+  font-weight: bolt;
+}
+
+input[type=text], input[type=password] , input[type=email], input[type=date], input[type=time], select
+{ 
+  padding: 2px 5px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: small
+}
+
+input[type=number]
+{ 
+  width: 4em;
+  padding: 2px 5px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: small
+}
+
+input[type=submit]  
+{ 
+  width: auto;
+  background-color: black;
+  display: inline-block;
+  color: white;
+  padding: 2px 5px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: small
+}
+                
+
+input[type=submit]:hover  
+{  
+  background-color: darkgray;
+}
+
+fieldset  
+{ 
+  margin: 3px;
+  padding: 3px;
+  border-color: silver;
+  border-radius: 3px;
+  border-width: 1px;
+}
+
+form  
+{ 
+  text-align: left;
+}          
+
+table
+{
+  border-radius: 2px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+tr
+{
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+}
+
+td,th 
+{
+  margin: 0;
+  padding: 5px 10px 5px 10px;
+  border-radius: 2px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  white-space: nowrap;
+}
+
+
+/*Layout setting---------------------*/
+body 
+{
+}
+
+.header, .left_panel, .content, .footer 
+{ 
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  border-color: silver;
+  margin: 5px;
+  padding: 5px;
+}
+    
+.header, .footer
+{
+  text-align: center;
+}
+
+.main 
+{ 
+  margin: 0;
+  padding: 0;
+  min-height: 600px;
+  display: flex;
+}
+    
+.left_panel 
+{ 
+  width: 250px;
+}
+     
+.content 
+{  
+  background-color: white;
+  flex: 1;
+}
+
+.footer 
+{ 
+  font-size: small;
+}
+/*----------------------------------*/
+
+
+
+.comment
+{
+  display:inline-block;
+  font-size: small;
+}
+
+.menu_label
+{
+  margin: 10px 0px 10px 0px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  border-style: solid;
+  border-width: 1px;
+  border-color: silver;
+  border-radius: 3px;
+}
+
+
+
+.left_panel_element 
+{ 
+  margin: 0;
+  padding:0;
+  text-align: center; 
+}
+
+.left_panel_element input[type=submit], 
+.left_panel_element input[type=text], 
+.left_panel_element input[type=password]
+{
+  width: 100%;
+}
+
+.line form,
+.line input[type=submit]
+{
+  display: inline-block;
+}
+
+.schedule_tournament td
+{
+  border: 1px solid;
+  margin: 0ů
+
+}
+
+.line select, input[type=number]
+{
+  display: inline-block;
+}
+
+.line
+{
+  display: block;
+}

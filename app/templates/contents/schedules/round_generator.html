@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+{% if schedule.state_by_name != "full"  %}
+<form action="/round_generator/{{schedule.tournament.id}}" method="post">
+{%else%}
+<form action="/save_schedule/{{schedule.id}}" method="post">
+{%endif%}
+
+    Rozpis pro turnaj: <b>{{schedule.tournament.name}} </b>
+    <table>
+
+        {% for round in schedule.rounds[:-1] %}
+        <tr><th>{{round.order}}. kolo</th>
+            {% for match1vs1 in  round.matches1vs1 %}
+            <td>
+                <input type="hidden" name="player {{match1vs1.result1_id}}" value="{{match1vs1.result1.user.id}}">
+                {{match1vs1.result1.user.nick_name}}
+                <input  name="wins {{match1vs1.result1_id}} "  type="hidden" value="{{match1vs1.result1.wins}}">{{match1vs1.result1.wins}} <b>:</b>
+                <input  name="wins {{match1vs1.result2_id}} "  type="hidden" value="{{match1vs1.result2.wins}}">{{match1vs1.result2.wins}}
+                {{match1vs1.result2.user.nick_name}}
+                <input type="hidden" name="player {{match1vs1.result2_id}}" value="{{match1vs1.result2.user.id}}">
+            </td>
+
+            {%endfor%}
+        </tr>
+        {%endfor%}
+
+        <tr><th>{{schedule.rounds[-1].order}}. kolo</th>
+        {% for match1vs1 in schedule.rounds[-1].matches1vs1 %}
+        <td>
+                <input type="hidden" name="player {{match1vs1.result1_id}}" value="{{match1vs1.result1.user.id}}">
+                {{match1vs1.result1.user.nick_name}}
+                <input  name="wins {{match1vs1.result1_id}} "  type="number" value="{{match1vs1.result1.wins}}"> <b>:</b>
+                <input  name="wins {{match1vs1.result2_id}} "  type="number" value="{{match1vs1.result2.wins}}">
+                {{match1vs1.result2.user.nick_name}}
+                <input type="hidden" name="player {{match1vs1.result2_id}}" value="{{match1vs1.result2.user.id}}">
+        </td>
+        {%endfor%}
+        </tr>
+
+
+    </table>
+    {% if schedule.state_by_name != "full"  %}
+     <input type="submit" value="Další kolo">
+    {% else%}
+    <input type="submit" value="Uložit a přepsat">
+    {% endif  %}
+</form>
+
+
+
+{% endblock %}

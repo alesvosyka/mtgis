@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+    <form action="/round_generator/{{tournament.id}}" method="post">
+        <fieldset>
+            <legend>Bodování</legend>
+            Čistá výhra:
+            <input type="number" name="pure_win" value="3" min="0">,
+            Výhra:
+            <input type="number" name="win" value="2" min="0">,
+            Remíza:
+            <input type="number" name="draw" value="1" min="0">,
+            Prohra:
+            <input type="number" name="lose" value="1" min="0">,
+            Čistá prohra
+            <input type="number" name="pure_lose" value="0" min="0">
+        </fieldset>
+        <fieldset>
+            <legend>Nastavení prvního kola</legend>
+            <input type="radio" name="first_round"  value="random" checked> Náhodně
+
+        </fieldset>
+
+        <input type="submit" value="Pokračovat">
+    </form>
+
+{% endblock %}

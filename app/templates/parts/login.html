@@ -1,0 +1,19 @@
+<div class="left_panel_element">
+<fieldset>
+
+    <legend>Přihlášení</legend>
+
+    <form action = "/login" method = "post">
+        <label for="login_name">Přihlašovací jméno:</label>
+        <input type = "text" name = "login_name" id="login_name"/> <br />
+        <label for = "password">Heslo:</label><br />
+        <input type = "password" name = "password" id = "password" /> <br />
+        <input type = "submit" value = "Přihlásit se" />
+    </form>
+
+    <form action = "/register" method = "get">
+        <input type = "submit" value = "Registrace" />
+    </form>
+{{ login_message }}
+</fieldset>
+</div>

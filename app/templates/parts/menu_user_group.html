@@ -1,0 +1,15 @@
+<div class="left_panel_element">
+    <div class='menu_label'> HRÁČI & SKUPINY  </div>
+    <ul>
+       <li><a href="/list_of_users">Přehled uživatelů</a></li>
+
+        <li><a href="/list_of_groups">Přehled skupin</a></li>
+        {% if current_user.is_authenticated %}
+
+        <li><a href="/create_group">Vytvořit skupinu </a></li>
+        <li><a href="/add_users">Přidat uživatele</a></li>
+        {%endif%}
+
+
+    </ul>
+</div>

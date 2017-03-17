@@ -1,0 +1,125 @@
+{% extends 'layout.html' %}
+{% block content %}
+Název turnaje: <b>{{tournament.name}}</b><br>
+Vlastník: <a href="/user_profile/{{tournament.owner.id}}"> {{ tournament.owner.nick_name }} </a> <br>
+Hráči:
+{% for player in tournament.players %}
+<a href="/user_profile/{{player.user.id}}">{{player.user.nick_name}} </a>,
+{% endfor %} <br>
+
+
+Typ: {{tournament.type_by_name}} <br>
+Stav: {{tournament.state_by_name}}<br>
+{% if tournament.type_by_name == "booster_draft" %}
+Boostery:
+{% for set in tournament.playing_sets %}
+    {{set.set_by_name}}
+{% endfor%}
+{% endif %}
+
+{% if current_user.id == tournament.owner.id %}
+{% if tournament.state_by_name == "with_schedule" %}
+    <br> <br>
+
+    <fieldset>
+        <legend>Rozpis zápasů</legend>
+
+        Typ: {{tournament.schedules[0].type_by_name}}<br>
+        Stav: {{ tournament.schedules[0].state_by_name}}<br>
+
+    <table>
+
+        {% for round in tournament.schedules[0].rounds %}
+        <tr><th>{{round.order}}. kolo</th>
+         {% for match1vs1 in  round.matches1vs1 %}
+
+
+            <td>
+                <a href="/user_profile/{{match1vs1.result1.user.id}}">{{match1vs1.result1.user.nick_name}}</a>
+                {{match1vs1.result1.wins}} :
+                {{match1vs1.result2.wins}}
+                <a href="/user_profile/{{match1vs1.result2.user.id}}">{{match1vs1.result2.user.nick_name}}</a>
+            </td>
+
+        {%endfor%}
+        </tr>
+
+
+    {%endfor%}
+    </table>
+
+    {%if tournament.schedules[0].type_by_name == "by_round"%}
+    <form action="/edit_by_round/{{tournament.schedules[0].id}}" method="post">
+    <input type="submit" value="Editovat (Generovat)">
+    <input type="hidden"  name="tournament_id" value="{{tournament.id}}">
+    </form>
+    {%else%}
+    <form action="/edit_schedule/{{tournament.schedules[0].id}}" method="post">
+    <input type="submit" value="Editovat">
+    <input type="hidden"  name="tournament_id" value="{{tournament.id}}">
+    </form>
+    {%endif%}
+    <form action="/delete_round_schedule/{{tournament.schedules[0].id}}">
+        <input type="submit" value="Smazat rozpis">
+    </form>
+    Bodování:
+        Čistá výhra = {{tournament.schedules[0].point_system.pure_win }},
+        Výhra = {{tournament.schedules[0].point_system.win }},
+        Remíza = {{tournament.schedules[0].point_system.draw }},
+        Prohra = {{tournament.schedules[0].point_system.lose }},
+        Čistá prohra = {{tournament.schedules[0].point_system.pure_lose }} <br>
+    <fieldset>
+        <legend>Body [za kolo / součet]</legend>
+
+
+        {% for round in tournament.schedules[0].rounds_points %}
+        {{ loop.index }}. kolo:
+        {% for player, this_score, sum_score in  round %}
+            {{player.user.nick_name}}[ {{ this_score}} | {{ sum_score }} ],
+
+        {% endfor%} <br>
+        {% endfor%}
+        <b> Celkem:  </b>
+        {% for player, score in tournament.schedules[0].sum_points %}
+            {{player.user.nick_name}}[ {{ score}} ],
+        {%endfor%}
+
+    </fieldset>
+
+    </fieldset>
+
+
+
+    <form action="/delete_tournament/{{tournament.id}}" method="post">
+        <input type="submit" value="Smazat turnaj včetně rozpisu">
+    </form>
+
+{% endif %}
+{% endif %}
+
+{#---------------------------------------#}
+{% if current_user.id == tournament.owner.id %}
+
+{% if tournament.state_by_name == "open" %}
+    <form action="/delete_tournament/{{tournament.id}}" method="post">
+        <input type="submit" value="Smazat turnaj">
+    </form>
+
+    <form action="/generateEachVsEach/{{tournament.id}}" method="post">
+        <input type="submit" value="Generovat náhodně rozpis (každý proti každému)">
+    </form>
+
+    <form action="/manual_setting_tournament_schedule/{{tournament.id}}" method="post">
+        <input type="submit" value="Vygenerovat prázdnou tabulku a manuálně zadat">
+        Počet kol:<input type="number" name="count_of_round" value="1">
+    </form>
+
+    <form action="/generate_by_round/{{tournament.id}}" method="post">
+        <input type="submit" value="Generovat po kole">
+    </form>
+
+{% endif %}
+
+{% endif %}
+
+{% endblock %}
