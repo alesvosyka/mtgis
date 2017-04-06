@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+<table>
+    <tr>
+        <th>Název turnaje</th>
+        <th>Vlastník</th>
+        <th>Začátek</th>
+        <th>Skupiny</th>
+        <th>Hráči</th>
+        <th>Stav</th>
+    </tr>
+    {% for tournament in tournaments%}
+    <tr>
+        <td><a href="/tournament_info/{{tournament.id}}">{{tournament.name}}</a></td>
+        <td><a href="/user_profile/{{tournament.owner.id}}">{{tournament.owner.nick_name}}</a></td>
+        <td>{{tournament.start_datetime}}</td>
+        <td>{% for group in tournament.groups %}  {{group.name}},  {% endfor%}</td>
+        <td> {% for player in tournament.players %}  {{player.user.nick_name}},  {% endfor%}</td>
+        <td> {{tournament.state_by_name}}</td>
+    </tr>
+    {%endfor%}
+</table>
+
+
+
+
+{% endblock %}

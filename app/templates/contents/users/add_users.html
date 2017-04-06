@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form action="/add_users" method="post">
+<fieldset>
+    <label for="new_users">Přidat nové hráče:</label>
+    <input type = "text" name = "new_users" id="new_users"  /> <span class="comment"> - jednotlivé přezdívky musí být odděleny mezerou</span> <br/>
+    <input type="submit" value="Přidat uživatele">
+</fieldset>
+</form>
+
+{% endblock %}
