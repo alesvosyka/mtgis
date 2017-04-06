@@ -2,9 +2,9 @@
 {% block content %}
 
 {% if schedule.state_by_name != "full"  %}
-<form action="/round_generator/{{schedule.tournament.id}}" method="post">
+<form action="/round_generator/{{schedule.tournament.id}}" method="post" id="form_generator_by_round">
 {%else%}
-<form action="/save_schedule/{{schedule.id}}" method="post">
+<form action="/save_schedule/{{schedule.id}}" method="post"  id="form_generator_by_round" >
 {%endif%}
 
     Rozpis pro turnaj: <b>{{schedule.tournament.name}} </b>
@@ -14,12 +14,10 @@
         <tr><th>{{round.order}}. kolo</th>
             {% for match1vs1 in  round.matches1vs1 %}
             <td>
-                <input type="hidden" name="player {{match1vs1.result1_id}}" value="{{match1vs1.result1.user.id}}">
                 {{match1vs1.result1.user.nick_name}}
-                <input  name="wins {{match1vs1.result1_id}} "  type="hidden" value="{{match1vs1.result1.wins}}">{{match1vs1.result1.wins}} <b>:</b>
-                <input  name="wins {{match1vs1.result2_id}} "  type="hidden" value="{{match1vs1.result2.wins}}">{{match1vs1.result2.wins}}
+                {{match1vs1.result1.wins}} <b>:</b>
+                {{match1vs1.result2.wins}}
                 {{match1vs1.result2.user.nick_name}}
-                <input type="hidden" name="player {{match1vs1.result2_id}}" value="{{match1vs1.result2.user.id}}">
             </td>
 
             {%endfor%}
@@ -29,25 +27,41 @@
         <tr><th>{{schedule.rounds[-1].order}}. kolo</th>
         {% for match1vs1 in schedule.rounds[-1].matches1vs1 %}
         <td>
-                <input type="hidden" name="player {{match1vs1.result1_id}}" value="{{match1vs1.result1.user.id}}">
+                <input id="player1" type="hidden" name="player {{match1vs1.result1_id}}" value="{{match1vs1.result1.user.id}}">
                 {{match1vs1.result1.user.nick_name}}
-                <input  name="wins {{match1vs1.result1_id}} "  type="number" value="{{match1vs1.result1.wins}}"> <b>:</b>
-                <input  name="wins {{match1vs1.result2_id}} "  type="number" value="{{match1vs1.result2.wins}}">
+                <input id="wins1" name="wins {{match1vs1.result1_id}} "  type="number" value="{{match1vs1.result1.wins}}" min="0" max="100"> <b>:</b>
+                <input id="wins2" name="wins {{match1vs1.result2_id}} "  type="number" value="{{match1vs1.result2.wins}}" min="0" max="100">
                 {{match1vs1.result2.user.nick_name}}
-                <input type="hidden" name="player {{match1vs1.result2_id}}" value="{{match1vs1.result2.user.id}}">
+                <input id="player2" type="hidden" name="player {{match1vs1.result2_id}}" value="{{match1vs1.result2.user.id}}">
         </td>
         {%endfor%}
         </tr>
 
 
     </table>
+
     {% if schedule.state_by_name != "full"  %}
      <input type="submit" value="Další kolo">
+     <button type="button" id="save_by_round" data-url_for_post="/save_schedule/{{schedule.id}}">Uložit a odejít</button>
+
     {% else%}
     <input type="submit" value="Uložit a přepsat">
     {% endif  %}
+    {% if schedule.rounds | length > 1 %}
+      <button type="button" id="delete_round_by_round" data-url_for_post="/delete_last_round_schedule/{{schedule.id}}">Smazat kolo</button>
+    {%endif%}
+
+
+    <fieldset>
+        <legend>Pořadí:</legend>
+
+
+        {% for player_score in schedule.points_to_round %}
+            {{loop.index}}. {{player_score[0].user.nick_name}} [{{player_score[1]}}]b <br />
+        {% endfor %}
+
+    </fieldset>
+
 </form>
-
-
 
 {% endblock %}

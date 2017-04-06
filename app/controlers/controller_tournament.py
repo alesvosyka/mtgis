@@ -22,6 +22,7 @@ def tournaments_list():
 def tournament_info(tournament_id):
     if request.method == 'GET':
         tournament = Tournament.query.get(tournament_id)
+        print(tournament.to_json())
         return render_template('contents/tournaments/tournament_info.html',
                                tournament=tournament,)
 
@@ -64,7 +65,6 @@ def create_tournament():
 @app.route('/save_tournament', methods=['POST', 'GET'])
 def save_tournament():
     if request.method == 'POST':
-        print(request.form)
         tournament = Tournament(name=request.form['name'],
                                 owner_id=current_user.id,
                                 start_datetime=datetime.strptime(request.form['date'] + request.form['time'], "%Y-%m-%d%H:%M"),

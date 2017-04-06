@@ -3,6 +3,7 @@ from app.models.model_user import User
 from app.models.model_exceptions import ErrorRecordExists, ErrorRecordNotExists, ErrorNotSet
 from app.models.model_mtg import MtgSet
 from app.models.model_group import Group
+import json
 
 
 class Tournament(db.Model):
@@ -86,8 +87,14 @@ class Tournament(db.Model):
         db.session.commit()
         return Tournament.query.order_by(Tournament.id.desc()).first()
 
+    def to_json(self):
+        tournament_dict = dict()
+        tournament_dict["tournament_info"] = {"id": self.id, "name": self.name}
+        tournament_dict["owner"] = {"id": self.owner_id, "name": self.owner.nick_name}
+        tournament_dict["players"] = [(player.user_id, player.user.nick_name) for player in self.players]
+        return json.dumps(tournament_dict)
+
     def delete_schedule(self):
-        print(self.schedules)
         for schedule in self.schedules:
             schedule.delete()
 

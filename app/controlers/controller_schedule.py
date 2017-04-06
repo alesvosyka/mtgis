@@ -1,9 +1,8 @@
 from flask import request, render_template
 from app.config import app, db
-from app.models.model_turnament import Tournament
-from app.models.model_schedule import MatchesSchedule, PointSystem, RoundMatch1vs1
+from app.models.model_turnament import Tournament, Player
+from app.models.model_schedule import MatchesSchedule, PointSystem, RoundMatch1vs1, PlayerOrder
 from app.models.model_matches import ResultMatch
-from app.controlers.controller_decorators import privilege_required
 
 
 @app.route('/save_schedule/<int:schedule_id>', methods=['POST', 'GET'])
@@ -43,14 +42,6 @@ def edit_schedule(schedule_id):
                                schedule=schedule)
 
 
-@app.route('/delete_round_schedule/<int:schedule_id>', methods=['POST', 'GET'])
-def delete_round_scheme(schedule_id):
-    tournament = MatchesSchedule.query.get(schedule_id).tournament
-    tournament.schedules[0].delete()
-    tournament.state_by_name = "open"
-    return render_template('contents/tournaments/tournament_info.html', tournament=tournament)
-
-
 @app.route('/manual_setting_tournament_schedule/<int:tournament_id>', methods=['POST', 'GET'])
 def manual_setting_tournament_scheme(tournament_id):
     if request.method == 'POST':
@@ -79,7 +70,17 @@ def generate_each_vs_each(tournament_id):
                                schedule=schedule)
 
 
+@app.route('/delete_round_schedule/<int:schedule_id>', methods=['POST', 'GET'])
+def delete_round_schedule(schedule_id):
+    if request.method == 'POST':
+        schedule = MatchesSchedule.query.get(schedule_id)
+        schedule.delete()
+        return render_template('contents/tournaments/tournament_info.html',
+                               tournament=schedule.tournament)
+
+
 # by_round-------------------------------------
+
 
 @app.route('/generate_by_round/<int:tournament_id>', methods=['POST', 'GET'])
 def generate_by_round(tournament_id):
@@ -92,11 +93,16 @@ def generate_by_round(tournament_id):
 @app.route('/round_generator/<int:tournament_id>', methods=['POST', 'GET'])
 def round_generator(tournament_id):
     if request.method == 'POST':
+        print(request.form)
         tournament = Tournament.query.get(tournament_id)
         if tournament.state_by_name == "open":
             schedule = MatchesSchedule(tournament_id=tournament_id)
             schedule.add()
-            schedule.add_first_random_round()
+            for key, value in request.form.items():
+                if "player_id" in key:
+                    player_order = PlayerOrder(schedule_id=schedule.id, order=value, player_id=key.split(" ")[1])
+                    player_order.add()
+            schedule.add_first_round_by_order()
             schedule.type_by_name = 'by_round'
             schedule.state_by_name = "not_full"
             point_system = PointSystem(schedule_id=schedule.id,
@@ -113,7 +119,6 @@ def round_generator(tournament_id):
             schedule = tournament.schedules[0]
             if schedule.state_by_name == "not_full":
                 for key, value in request.form.items():
-                    print(request.form)
                     if "player" in key:
                         stamp, result_id = key.split()
                         ResultMatch.query.get(int(result_id)).user_id = int(value)
@@ -137,3 +142,22 @@ def edit_by_round(schedule_id):
         return render_template('contents/schedules/round_generator.html',
                                schedule=schedule)
 
+
+@app.route('/delete_last_round_schedule/<int:schedule_id>', methods=['POST', 'GET'])
+def delete_round_scheme(schedule_id):
+    if request.method == 'POST':
+        schedule = MatchesSchedule.query.get(schedule_id)
+        rounds = schedule.rounds
+        if rounds is not None:
+            rounds[-1].delete()
+            if schedule.state_by_name == "full":
+                schedule.state_by_name = "not_full"
+        rounds = schedule.rounds
+        if rounds is None:
+            schedule.delete()
+            tournament = schedule.tournament
+            tournament.state_by_name = "open"
+
+            return render_template('contents/tournaments/tournament_info.html', tournament=tournament)
+        else:
+            return render_template('contents/schedules/round_generator.html', schedule=schedule)

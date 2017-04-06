@@ -55,12 +55,9 @@ def compute_round(played_pairs=(), desc_list=(), verbose=False):
         # Exit program if result is full
         if len(result) >= (count_of_players // 2):
             return result
-        if verbose:
-            print("Indexes - left: {}, right: {}".format(left_index, right_index))
 
         if verbose:
-            print("Indexy po posunu - left: {}, right: {}".format(left_index, right_index))
-            print("{} {}".format(desc_list[left_index], desc_list[right_index]))
+            print("Indexes - left: {}, right: {}".format(left_index, right_index))
 
         # Reset flags
         is_in_pair_list = False
@@ -95,7 +92,7 @@ def compute_round(played_pairs=(), desc_list=(), verbose=False):
             left_index = 0
             right_index = left_index
 
-        # Recompute indices ann pop result if is nessecary
+        # Recompute indices and pop result if is nessecary
         if right_index < last_index:
             if verbose:
                 print("posouvam pravej {} > {} ".format(right_index, right_index + 1))
@@ -123,9 +120,9 @@ def compute_round(played_pairs=(), desc_list=(), verbose=False):
 
 
 if __name__ == "__main__":
-    my_players = ["G", "F", "E", "D", "C", "B" ]
+    my_players = ["G", "F", "E", "D", "C", "B"]
+    my_pairs = []
 
-    #print(function(my_played_pairs, sorted_players))
 
     results = []
     for i in range(len(my_players)-1):

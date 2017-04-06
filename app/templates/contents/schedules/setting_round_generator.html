@@ -15,10 +15,12 @@
             Čistá prohra
             <input type="number" name="pure_lose" value="0" min="0">
         </fieldset>
-        <fieldset>
-            <legend>Nastavení prvního kola</legend>
-            <input type="radio" name="first_round"  value="random" checked> Náhodně
 
+        <fieldset>
+            {% for player in tournament.players %}
+            {{player.user.nick_name}}
+            <input type="number" name="player_id {{player.id}}" value="{{loop.index}}" min="0" max="{{tournament.players|length +1 }}">,
+            {% endfor %}
         </fieldset>
 
         <input type="submit" value="Pokračovat">

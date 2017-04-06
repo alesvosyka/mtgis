@@ -1,25 +1,34 @@
 
 
-
-function make_user_table_from_JSON(json_user_list) 
+var load_page = function(html_string)
 {
-	var items = [];
-    $.each( json_user_list, 
-    		function( nick, id ) 
-    	   		{
-    				items.push( '<input type="checkbox" id='+ id + ' class="user_checkbox">' + nick + '</input><br />' );
-    	   		}
-    	  );	
-   	return items 		
+  var newDoc = document.open("text/html", "replace");
+  newDoc.write(html_string);
+  newDoc.close();
+}
+/*
+var make_post = function()
+{
+    var url = $("#savebyround").attr('data-url_for_post')
+    var form = $("#form_generator_by_round").serialize()
+    $.post(url, form, function(data, status) {load_page(data)})
+}
+
+var save_by_round_button = function() 
+{ 
+ $("#savebyround").click(make_post)
 }
 
 
-function get_user_list()
+*/
+
+function post_by_button (button_id, url, form_id)
 {
-  $.getJSON( "/get_user_list", data);
-  return data
+  console.log(button_id + " " + url )
+  $(button_id).click(function(){$.post(url,$(form_id).serialize(), function(data){load_page(data)} )})
 }
 
 
-$('#create_tournament').ready( make_user_table_from_JSON(get_user_list));
+$(document).ready(function(){ post_by_button( "#save_by_round", $("#save_by_round").attr('data-url_for_post'), "#form_generator_by_round" )});
+$(document).ready(function(){ post_by_button( "#delete_round_by_round", $("#delete_round_by_round").attr('data-url_for_post'), "#form_generator_by_round" )});
 
